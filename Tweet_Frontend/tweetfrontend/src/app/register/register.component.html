@@ -1,0 +1,72 @@
+<form (ngSubmit)="onSubmit()">
+
+  <div class="form-group">
+    <label>First Name</label>
+    <input (input)="firstNamechecker()" type="text" class="form-control" name="firstName" id="firstName"
+      placeholder="Enter First Name" [(ngModel)]="user.firstName">
+    <div *ngIf="firstNameCheck" class="alert alert-danger">
+      Please Enter a valid firstname
+    </div>
+  </div>
+
+  <div class="form-group">
+    <label>Last Name</label>
+    <input (input)="lastNamechecker()" type="text" name="lastName" class="form-control" id="lastName"
+      placeholder="Enter Last Name" [(ngModel)]="user.lastName">
+    <div *ngIf="lastNameCheck" class="alert alert-danger">
+      Please Enter a valid lastname
+    </div>
+  </div>
+
+  <div class="form-group">
+    <label>Gender :</label> &nbsp;&nbsp;
+    <label class="radio-inline">
+      <input type="radio" name="gender" value="Male" [(ngModel)]="user.gender" (change)="genderchecker()"> Male
+    </label>
+    &nbsp;&nbsp;
+    <label class="radio-inline">
+      <input type="radio" name="gender" value="Female" [(ngModel)]="user.gender" (change)="genderchecker()"> Female
+    </label>
+    &nbsp;&nbsp;
+    <label class="radio-inline">
+      <input type="radio" name="gender" value="Transgender" [(ngModel)]="user.gender" (change)="genderchecker()">
+      Transgender
+    </label>
+    <div *ngIf="gendercheck" class="alert alert-danger">
+      Please Select the Gender
+    </div>
+  </div>
+
+  <div class="form-group">
+    <label>Email ID</label>
+    <input (input)="emailchecker()" type="email" name="email" class="form-control" id="email"
+      placeholder="Enter Email Id" [(ngModel)]="user.email">
+    <div *ngIf="emailcheck" class="alert alert-danger">
+      Please Enter a valid Email Id
+    </div>
+  </div>
+
+  <div class="form-group">
+    <label>Password</label>
+    <input (input)="passwordchecker()" type="password" name="password" class="form-control" id="password"
+      placeholder="Enter Password" [(ngModel)]="user.password">
+    <div *ngIf="passwordcheck" class="alert alert-danger">
+      Please Enter a password with atleast 1 special character, lowercase letter, uppercase letter and a number
+    </div>
+  </div>
+
+
+  <div class="form-group">
+    <label>Date of Birth</label>
+    <input (change)="dobchecker()" type="date" name="dateOfBirth" class="form-control" id="dateOfBirth"
+      [(ngModel)]="user.dateOfBirth" max="{{date | date:'yyyy-MM-dd'}}">
+    <div *ngIf="dobcheck" class="alert alert-danger">
+      Please select a valid date
+    </div>
+  </div>
+
+  <button class=" btn btn-primary" type="submit">Register</button>&nbsp;
+  <button onclick="location.href='/login'" type="button" class="btn btn-warning">Log in</button>
+  <br>
+  <br>
+</form>

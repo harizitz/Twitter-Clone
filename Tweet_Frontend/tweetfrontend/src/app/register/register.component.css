@@ -1,0 +1,7 @@
+form {
+  margin: auto auto;
+  width: 60%;
+}
+form > div > * {
+  margin-bottom: 20px;
+}

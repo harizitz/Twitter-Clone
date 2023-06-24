@@ -1,0 +1,12 @@
+<div class="card-group">
+  <div *ngFor="let user of users">
+    <div class="card" style="width: 18rem;">
+      <div class="card-body">
+        <h5 class="card-title">{{user.firstName}} {{user.lastName}}</h5>
+        <h6 class="card-subtitle mb-2 text-muted">{{user.email}}</h6>
+        <p class="card-text">Gender : {{user.gender}}<br />
+          Date of Birth : {{user.dateOfBirth.split("-").reverse().join("-")}}</p>
+      </div>
+    </div>
+  </div>
+</div>
