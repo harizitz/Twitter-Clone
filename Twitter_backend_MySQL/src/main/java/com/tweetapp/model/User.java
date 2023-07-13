@@ -4,12 +4,13 @@ import java.util.List;
 
 import javax.persistence.CascadeType;
 import javax.persistence.Entity;
-import javax.persistence.FetchType;
 import javax.persistence.GeneratedValue;
 import javax.persistence.GenerationType;
 import javax.persistence.Id;
 import javax.persistence.OneToMany;
 import javax.persistence.Table;
+
+import com.fasterxml.jackson.annotation.JsonIgnore;
 
 @Entity
 @Table(name = "user")
@@ -28,16 +29,16 @@ public class User {
 	private String userCreatedTime;
 	private Boolean isUserLoggedIn;
 
-	@OneToMany(mappedBy = "user", cascade = CascadeType.ALL, fetch = FetchType.LAZY)
+	@JsonIgnore
+	@OneToMany(mappedBy = "user", cascade = CascadeType.ALL)
 	private List<Tweets> tweets;
 
-	@OneToMany(mappedBy = "user", cascade = CascadeType.ALL, fetch = FetchType.LAZY)
-	private List<LoginHistory> loginHistory;
-
-	@OneToMany(mappedBy = "user", cascade = CascadeType.ALL, fetch = FetchType.LAZY)
+	@JsonIgnore
+	@OneToMany(mappedBy = "user", cascade = CascadeType.ALL)
 	private List<Reply> reply;
 
-	@OneToMany(mappedBy = "user", cascade = CascadeType.ALL, fetch = FetchType.LAZY)
+	@JsonIgnore
+	@OneToMany(mappedBy = "user", cascade = CascadeType.ALL)
 	private List<Likes> likes;
 
 	public User() {
@@ -46,10 +47,6 @@ public class User {
 
 	public int getUser_id() {
 		return user_id;
-	}
-
-	public void setLikes(List<Likes> likes) {
-		this.likes = likes;
 	}
 
 	public void setUser_id(int user_id) {
@@ -120,16 +117,27 @@ public class User {
 		this.isUserLoggedIn = isUserLoggedIn;
 	}
 
+	public List<Tweets> getTweets() {
+		return tweets;
+	}
+
 	public void setTweets(List<Tweets> tweets) {
 		this.tweets = tweets;
 	}
 
-	public void setLoginHistory(List<LoginHistory> loginHistory) {
-		this.loginHistory = loginHistory;
+	public List<Reply> getReply() {
+		return reply;
 	}
 
 	public void setReply(List<Reply> reply) {
 		this.reply = reply;
 	}
 
+	public List<Likes> getLikes() {
+		return likes;
+	}
+
+	public void setLikes(List<Likes> likes) {
+		this.likes = likes;
+	}
 }

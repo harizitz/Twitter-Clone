@@ -45,7 +45,7 @@ const routes: Routes = [
     redirectTo: '/tweets',
     pathMatch: 'full',
   },
-  { path: '**', redirectTo: '' },
+  { path: '**', redirectTo: '/tweets' },
 ];
 
 @NgModule({

@@ -9,7 +9,7 @@ import javax.persistence.JoinColumn;
 import javax.persistence.ManyToOne;
 import javax.persistence.Table;
 
-import com.fasterxml.jackson.annotation.JsonIgnoreProperties;
+import com.fasterxml.jackson.annotation.JsonBackReference;
 
 @Entity
 @Table(name = "likes")
@@ -19,14 +19,12 @@ public class Likes {
 	@GeneratedValue(strategy = GenerationType.IDENTITY)
 	private int like_id;
 
-	@ManyToOne(fetch = FetchType.LAZY)
+	@ManyToOne
 	@JoinColumn(name = "tweet_id")
-	@JsonIgnoreProperties({ "hibernateLazyInitializer", "handler" })
 	private Tweets tweet;
 
-	@ManyToOne(fetch = FetchType.LAZY)
+	@ManyToOne
 	@JoinColumn(name = "user_id")
-	@JsonIgnoreProperties({ "hibernateLazyInitializer", "handler" })
 	private User user;
 
 	public Likes() {

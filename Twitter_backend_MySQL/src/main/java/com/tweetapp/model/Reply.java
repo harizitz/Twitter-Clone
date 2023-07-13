@@ -1,7 +1,6 @@
 package com.tweetapp.model;
 
 import javax.persistence.Entity;
-import javax.persistence.FetchType;
 import javax.persistence.GeneratedValue;
 import javax.persistence.GenerationType;
 import javax.persistence.Id;
@@ -9,7 +8,7 @@ import javax.persistence.JoinColumn;
 import javax.persistence.ManyToOne;
 import javax.persistence.Table;
 
-import com.fasterxml.jackson.annotation.JsonIgnoreProperties;
+import com.fasterxml.jackson.annotation.JsonBackReference;
 
 @Entity
 @Table(name = "reply")
@@ -21,18 +20,19 @@ public class Reply {
 
 	private String reply;
 
-	@ManyToOne(fetch = FetchType.LAZY)
+	@JsonBackReference(value="reply")
+	@ManyToOne
 	@JoinColumn(name = "tweet_id")
-	@JsonIgnoreProperties({ "hibernateLazyInitializer", "handler" })
 	private Tweets tweet;
 
-	@ManyToOne(fetch = FetchType.LAZY)
+	@ManyToOne
 	@JoinColumn(name = "user_id")
-	@JsonIgnoreProperties({ "hibernateLazyInitializer", "handler" })
 	private User user;
 
-	Reply() {
+	
+	public Reply() {
 		super();
+		// TODO Auto-generated constructor stub
 	}
 
 	public Reply(int reply_id, String reply, Tweets tweet, User user) {
@@ -59,19 +59,20 @@ public class Reply {
 		this.reply = reply;
 	}
 
-	
-	public void setTweet(Tweets tweet) {
-		this.tweet = tweet;
+	public Tweets getTweet() {
+		return tweet;
 	}
 
-	
-	public void setUser(User user) {
-		this.user = user;
+	public void setTweet(Tweets tweet) {
+		this.tweet = tweet;
 	}
 
 	public User getUser() {
 		return user;
 	}
-	
+
+	public void setUser(User user) {
+		this.user = user;
+	}
 
 }

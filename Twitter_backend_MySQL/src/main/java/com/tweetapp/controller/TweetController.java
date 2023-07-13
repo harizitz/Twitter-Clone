@@ -27,19 +27,24 @@ public class TweetController {
 	@Autowired
 	TweetServiceImpl tweetservice;
 
+	@GetMapping("/users/all")
+	public List<User> getAllUsers() {
+		return tweetservice.getAllUsers();
+	}
+
+	@GetMapping("/all")
+	public List<Tweets> getAllTweets() {
+		return tweetservice.getTweets();
+	}
+
+	@GetMapping("/{userid}")
+	public List<Tweets> getAllTweetsOfUser(@PathVariable("userid") int user_id) {
+		return tweetservice.getTweetOfUser(user_id);
+	}
+
 	@PostMapping("/register")
 	public User register(@RequestBody User user) {
 		return tweetservice.validateAndSave(user);
-	}
-
-	@PostMapping("/{userid}/add")
-	public void postTweet(@PathVariable("userid") int user_id, @RequestBody Tweets tweet) {
-		tweetservice.addTweet(user_id, tweet);
-	}
-
-	@PostMapping("/{userid}/reply/{id}")
-	public void replyTweet(@RequestBody Reply reply, @PathVariable("userid") int user_id, @PathVariable("id") int id) {
-		tweetservice.replyTweet(user_id, id, reply);
 	}
 
 	@PostMapping("/login")
@@ -52,35 +57,35 @@ public class TweetController {
 		tweetservice.logout(user_id);
 	}
 
+	@PostMapping("/{userid}/add")
+	public void postTweet(@PathVariable("userid") int user_id, @RequestBody Tweets tweet) {
+		tweetservice.addTweet(user_id, tweet);
+	}
+
+	@PostMapping("/{userid}/reply/{id}")
+	public void replyTweet(@RequestBody String reply, @PathVariable("userid") int user_id, @PathVariable("id") int id) {
+		tweetservice.replyTweet(user_id, id, reply);
+	}
+
 	@GetMapping("/{userid}/like/{id}")
 	public void likeTweet(@PathVariable("userid") int user_id, @PathVariable("id") int tweet_id) {
 		tweetservice.addLike(user_id, tweet_id);
-	}
-
-	@GetMapping("/all")
-	public List<Tweets> getAllTweets() {
-		return tweetservice.getTweets();
-	}
-
-	@GetMapping("/users/all")
-	public List<User> getAllUsers() {
-		return tweetservice.getAllUsers();
-	}
-
-	@GetMapping("/{userid}")
-	public List<Tweets> getAllTweetsOfUser(@PathVariable("userid") int user_id) {
-		return tweetservice.getTweetOfUser(user_id);
 	}
 
 	@DeleteMapping("/{userid}/delete/{id}")
 	public void deleteTweet(@PathVariable("id") int id) {
 		tweetservice.deleteTweet(id);
 	}
+	
+	@DeleteMapping("/{userid}/deleteReply/{id}")
+	public void deleteReply(@PathVariable("id") int id) {
+		tweetservice.deleteReply(id);
+	}
 
 	@PutMapping("/{userid}/update/{id}")
 	public void updateTweet(@PathVariable("userid") int user_id, @PathVariable("id") int id,
-			@RequestBody Tweets tweet) {
-		tweetservice.updateTweet(user_id, id, tweet);
+			@RequestBody String newTweet) {
+		tweetservice.updateTweet(user_id, id, newTweet);
 	}
 
 	@GetMapping("/likes/{userid}")
@@ -88,4 +93,3 @@ public class TweetController {
 		return tweetservice.getUserLikes(userid);
 	}
 }
-

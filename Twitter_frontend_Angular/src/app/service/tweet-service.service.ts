@@ -3,7 +3,6 @@ import { HttpClient } from '@angular/common/http';
 import { Observable } from 'rxjs';
 import { User } from '../user-class/user';
 import { Tweet } from '../tweet-class/tweet';
-import { Reply } from '../reply-class/reply';
 
 @Injectable({
   providedIn: 'root',
@@ -13,7 +12,6 @@ export class TweetServiceService {
 
   constructor(private httpClient: HttpClient) {}
   getAllUsers(): Observable<User[]> {
-    console.log('in service');
     return this.httpClient.get<User[]>(`${this.baseURL}` + 'users/all');
   }
   getAllTweets(): Observable<Tweet[]> {
@@ -37,22 +35,19 @@ export class TweetServiceService {
       tweet
     );
   }
-  getReply(): Observable<Object[]> {
-    return this.httpClient.get<Object[]>(`${this.baseURL}` + '/reply/all');
-  }
   like(userid: number, tweetid: number): Observable<any> {
     return this.httpClient.get(`${this.baseURL}` + userid + '/like/' + tweetid);
   }
   getUserLikes(userid: number): Observable<any> {
     return this.httpClient.get(`${this.baseURL}` + 'likes/' + userid);
   }
-  addReply(tweetid: number, userid: number, reply: Reply): Observable<Reply> {
-    return this.httpClient.post<Reply>(
+  addReply(tweetid: number, userid: number, reply: string): Observable<any> {
+    return this.httpClient.post(
       `${this.baseURL}` + userid + '/' + 'reply/' + tweetid,
       reply
     );
   }
-  update(userid: number, tweetid: number, tweet: Tweet): Observable<any> {
+  update(userid: number, tweetid: number, tweet: string): Observable<any> {
     return this.httpClient.put(
       `${this.baseURL}` + userid + '/' + 'update/' + tweetid,
       tweet
@@ -61,6 +56,11 @@ export class TweetServiceService {
   delete(userid: number, tweetid: number): Observable<any> {
     return this.httpClient.delete(
       `${this.baseURL}` + userid + '/' + 'delete/' + tweetid
+    );
+  }
+  deleteReply(userid: number, replyid: number): Observable<any> {
+    return this.httpClient.delete(
+      `${this.baseURL}` + userid + '/' + 'deleteReply/' + replyid
     );
   }
 }

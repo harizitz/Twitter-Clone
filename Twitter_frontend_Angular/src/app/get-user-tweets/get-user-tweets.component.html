@@ -1,23 +1,49 @@
 <div *ngFor="let tweet of tweets">
   <div class="card">
     <div class="card-body">
-      <h5 class="card-title">{{tweet.tweet}}</h5>
-      <button (click)="editopen=!editopen" class="btn btn-info btn-sm">{{editopen?'Edit':'Cancel'}}</button>&nbsp;
-      <button (click)="deleteTweet(tweet.tweet_id)" class="btn btn-danger btn-sm">Delete</button>
+      <h5 class="card-title">{{ tweet.tweet }}</h5>
+      <button
+        (click)="tweet.editcheck = !tweet.editcheck"
+        class="btn btn-info btn-sm"
+      >
+        {{ !tweet.editcheck ? "Edit" : "Cancel" }}</button
+      >&nbsp;
+      <button
+        (click)="deleteTweet(tweet.tweet_id)"
+        class="btn btn-danger btn-sm"
+      >
+        Delete
+      </button>
 
-      <div class="card-body" *ngIf="!editopen">
-        <input placeholder="Enter Updated Tweet" value="newtweet.tweet" [(ngModel)]="newtweet.tweet"
-          class="form-control" type="text"><br>
-        <button (click)="updateTweet(tweet.tweet_id)" class="btn btn-primary btn-sm">Apply</button>
+      <div class="card-body" *ngIf="tweet.editcheck">
+        <input
+          placeholder="Enter Updated Tweet"
+          value="tweet.editstring"
+          [(ngModel)]="tweet.editstring"
+          class="form-control"
+          type="text"
+        /><br />
+        <button
+          (click)="updateTweet(tweet.tweet_id)"
+          class="btn btn-primary btn-sm"
+        >
+          Apply
+        </button>
       </div>
 
       <div class="card-body"></div>
       <div>
-        <h6 *ngIf="tweet.reply.length!=0">Replies : </h6>
+        <h6 *ngIf="tweet.reply.length != 0">Replies :</h6>
         <div class="card" *ngFor="let reply of tweet.reply">
           <div class="card-body" *ngIf="reply">
-            <h6>{{reply.reply}}</h6>
-            <p>by-{{reply.user.firstName}}</p>
+            <h6>{{ reply.reply }}</h6>
+            <p>by-{{ reply.user.firstName }}</p>
+            <button
+              (click)="deleteReply(reply.reply_id)"
+              class="btn btn-danger btn-sm"
+            >
+              Delete
+            </button>
           </div>
         </div>
       </div>

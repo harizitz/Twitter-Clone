@@ -9,12 +9,10 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
 import com.tweetapp.model.Likes;
-import com.tweetapp.model.LoginHistory;
 import com.tweetapp.model.Reply;
 import com.tweetapp.model.Tweets;
 import com.tweetapp.model.User;
 import com.tweetapp.repository.LikeRepository;
-import com.tweetapp.repository.LoginHistoryRepository;
 import com.tweetapp.repository.ReplyRepository;
 import com.tweetapp.repository.TweetRepository;
 import com.tweetapp.repository.UserRepository;
@@ -34,9 +32,6 @@ public class TweetServiceImpl implements TweetService {
 
 	@Autowired
 	LikeRepository likeRepository;
-
-	@Autowired
-	LoginHistoryRepository loginHistoryRepository;
 
 	@Override
 	public User validateAndSave(User user) {
@@ -61,24 +56,25 @@ public class TweetServiceImpl implements TweetService {
 	}
 
 	@Override
-	public void replyTweet(int user_id, int tweet_id, Reply reply) {
+	public void replyTweet(int user_id, int tweet_id, String reply) {
 		User user = new User();
 		user.setUser_id(user_id);
 
 		Tweets tweet = new Tweets();
 		tweet.setTweet_id(tweet_id);
-
-		reply.setTweet(tweet);
-		reply.setUser(user);
-		replyRepository.save(reply);
+		Reply postReply=new Reply();
+		postReply.setTweet(tweet);
+		postReply.setUser(user);
+		postReply.setReply(reply);
+		replyRepository.save(postReply);
 
 	}
 
 	@Override
-	public void updateTweet(int user_id, int tweet_id, Tweets tweet) {
+	public void updateTweet(int user_id, int tweet_id, String updatedTweet) {
 
 		Tweets tweetfromdb = tweetRepository.findById(tweet_id).get();
-		tweetfromdb.setTweet(tweet.getTweet());
+		tweetfromdb.setTweet(updatedTweet);
 
 		tweetRepository.save(tweetfromdb);
 
@@ -90,13 +86,6 @@ public class TweetServiceImpl implements TweetService {
 		if (userfromdb != null) {
 			userfromdb.setIsUserLoggedIn(true);
 			userRepository.save(userfromdb);
-
-			LoginHistory login = new LoginHistory();
-			login.setEmail(userfromdb.getEmail());
-			login.setLogin_time(new Date());
-			login.setUser(userfromdb);
-			loginHistoryRepository.save(login);
-
 			return userfromdb;
 		}
 		return userfromdb;
@@ -105,7 +94,6 @@ public class TweetServiceImpl implements TweetService {
 	@Override
 	public void logout(int user_id) {
 		userRepository.updateStatus(user_id);
-		loginHistoryRepository.setLogout(new Date(), user_id);
 	}
 
 	@Override
@@ -143,23 +131,18 @@ public class TweetServiceImpl implements TweetService {
 	}
 
 	@Override
-	public String forgotPassword(int user_id) {
-		String password = userRepository.getPassword(user_id);
-		if (password == null) {
-			return "User id Invalid";
-		}
-		return password;
-	}
-
-	@Override
 	public User getUser(int user_id) {
 		return userRepository.findById(user_id).get();
 	}
 
 	@Override
 	public void deleteTweet(int id) {
-		System.out.println(id);
 		tweetRepository.deleteById(id);
+	}
+	
+	@Override
+	public void deleteReply(int id) {
+		replyRepository.deleteById(id);
 	}
 
 	@Override

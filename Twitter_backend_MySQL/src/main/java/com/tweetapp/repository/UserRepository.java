@@ -15,10 +15,7 @@ public interface UserRepository extends JpaRepository<User, Integer> {
 
 	@Query("SELECT u FROM User u WHERE u.email = ?1")
 	User emailExists(String email);
-	
-	@Query("SELECT u.password FROM User u WHERE u.user_id = ?1")
-	String getPassword(int user_id);
-	
+		
 	@Transactional
 	@Modifying
 	@Query("UPDATE User u SET u.isUserLoggedIn = false where u.user_id=?1")

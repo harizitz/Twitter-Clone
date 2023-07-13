@@ -1,28 +1,41 @@
 <div *ngFor="let tweet of tweets">
-  <div class="card">
-    <div class="card-body">
-      <h5 class="card-title">{{tweet.tweet}}</h5>
-      <p class="card-text">by - {{tweet.user.firstName}} {{tweet.user.lastName}}</p>
-      <button (click)="wanttoreply=!wanttoreply"
-        class="btn btn-primary btn-sm">{{wanttoreply?'Cancel':'Reply'}}</button>&nbsp;
-      <button (click)="likeit(tweet.tweet_id)" class="btn btn-info btn-sm">
-        {{tweetlike.indexOf(tweet.tweet_id)>=0?'Unlike':'Like'}}
+  <div class="card-body">
+    <h5 class="card-title">{{ tweet.tweet }}</h5>
+    <p class="card-text">
+      by - {{ tweet.user.firstName }} {{ tweet.user.lastName }}
+    </p>
+    <button
+      (click)="tweet.replycheck = !tweet.replycheck"
+      class="btn btn-primary btn-sm"
+    >
+      {{ tweet.replycheck ? "Cancel" : "Reply" }}</button
+    >&nbsp;
+    <button (click)="likeit(tweet.tweet_id)" class="btn btn-info btn-sm">
+      {{ tweetlike.indexOf(tweet.tweet_id) >= 0 ? "Unlike" : "Like" }}
+    </button>
+    <div class="card-body" *ngIf="tweet.replycheck">
+      <input
+        placeholder="Enter Reply"
+        id="reply"
+        [(ngModel)]="tweet.replystring"
+        class="form-control"
+        type="text"
+      /><br />
+      <button
+        (click)="replytweet(tweet.tweet_id)"
+        class="btn btn-primary btn-sm"
+      >
+        Post Reply
       </button>
-      <div class="card-body" *ngIf="wanttoreply">
-        <input placeholder="Enter Reply" id='reply' [(ngModel)]="reply.reply" class="form-control" type="text"><br>
-        <button (click)="replytweet(tweet.tweet_id)" class="btn btn-primary btn-sm">Post Reply</button>
-      </div>
-      <div class="card-body"></div>
-      <div>
-        <h6 *ngIf="tweet.reply.length!=0">Replies : </h6>
-        <div class="card" *ngFor="let reply of tweet.reply">
-          <div class="card-body" *ngIf="reply">
-            <h6>{{reply.reply}}</h6>
-            <p>by-{{reply.user.firstName}}</p>
-          </div>
+    </div>
+    <div>
+      <h6 *ngIf="tweet.reply.length != 0">Replies :</h6>
+      <div class="card" *ngFor="let reply of tweet.reply">
+        <div class="card-body" *ngIf="reply">
+          <h6>{{ reply.reply }}</h6>
+          <p>by-{{ reply.user.firstName }}</p>
         </div>
       </div>
     </div>
   </div>
-  <div class="card-body"></div>
 </div>

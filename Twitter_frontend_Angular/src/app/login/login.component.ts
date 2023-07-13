@@ -13,10 +13,7 @@ export class LoginComponent implements OnInit {
   user: User = new User();
   logincheck: boolean = false;
   str: Tweet = new Tweet();
-  constructor(
-    private tweetService: TweetServiceService,
-    private router: Router
-  ) {}
+  constructor(private tweetService: TweetServiceService) {}
 
   ngOnInit(): void {}
   logging() {

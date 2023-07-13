@@ -12,15 +12,13 @@ import { User } from '../user-class/user';
 export class GetUserTweetsComponent implements OnInit {
   public tweets: Array<Tweet> = [];
   id: number;
-  editopen: boolean = true;
-  newtweet: Tweet = new Tweet();
   constructor(
     private tweetService: TweetServiceService,
     private activatedroute: ActivatedRoute
   ) {}
 
   ngOnInit(): void {
-    this.id = this.activatedroute.snapshot.params['userid'];
+    this.id = Number(localStorage.getItem('userid'));
     this.getTweets();
   }
   private getTweets() {
@@ -30,18 +28,36 @@ export class GetUserTweetsComponent implements OnInit {
   }
 
   updateTweet(tweetid: number) {
-    if (confirm('Are you sure to Update')) {
-      let userid = Number(localStorage.getItem('userid'));
-      this.tweetService.update(userid, tweetid, this.newtweet).subscribe();
-      location.reload();
+    let userid = Number(localStorage.getItem('userid'));
+    const index = this.tweets.findIndex((x) => x.tweet_id === tweetid);
+    if (this.tweets[index].editstring == null) {
+      alert('Please Enter a Tweet');
+    } else {
+      if (confirm('Are you sure to Update')) {
+        this.tweetService
+          .update(userid, tweetid, this.tweets[index].editstring)
+          .subscribe(() => {
+            this.getTweets();
+          });
+      }
     }
   }
 
   deleteTweet(tweetid: number) {
     if (confirm('Are you sure to Delete')) {
       let userid = Number(localStorage.getItem('userid'));
-      this.tweetService.delete(userid, tweetid).subscribe();
-      location.reload();
+      this.tweetService.delete(userid, tweetid).subscribe(() => {
+        this.getTweets();
+      });
+    }
+  }
+
+  deleteReply(replyid: number) {
+    if (confirm('Are you sure to Delete')) {
+      let userid = Number(localStorage.getItem('userid'));
+      this.tweetService.deleteReply(userid, replyid).subscribe(() => {
+        this.getTweets();
+      });
     }
   }
 }

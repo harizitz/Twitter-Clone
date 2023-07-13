@@ -1,6 +1,5 @@
-import { Component, OnInit } from '@angular/core';
+import { Component, OnInit, SimpleChanges } from '@angular/core';
 import { Like } from '../like-class/like';
-import { Reply } from '../reply-class/reply';
 import { TweetServiceService } from '../service/tweet-service.service';
 import { Tweet } from '../tweet-class/tweet';
 
@@ -14,14 +13,13 @@ export class GetAllTweetsComponent implements OnInit {
   userid: number;
   likes: Like[];
   tweetlike: Number[] = [];
-  reply: Reply = new Reply();
-  wanttoreply = false;
   constructor(private tweetService: TweetServiceService) {}
 
   ngOnInit(): void {
     this.getTweets();
     this.getUserLikes();
   }
+
   private getTweets() {
     this.tweetService.getAllTweets().subscribe((data) => {
       this.tweets = data;
@@ -30,8 +28,12 @@ export class GetAllTweetsComponent implements OnInit {
 
   likeit(tweetid: number) {
     this.userid = Number(localStorage.getItem('userid'));
+    if (this.tweetlike.indexOf(tweetid) >= 0) {
+      delete this.tweetlike[this.tweetlike.indexOf(tweetid)];
+    } else {
+      this.tweetlike.push(tweetid);
+    }
     this.tweetService.like(this.userid, tweetid).subscribe();
-    location.reload();
   }
 
   getUserLikes() {
@@ -45,7 +47,16 @@ export class GetAllTweetsComponent implements OnInit {
   }
   replytweet(tweetid: number) {
     this.userid = Number(localStorage.getItem('userid'));
-    this.tweetService.addReply(tweetid, this.userid, this.reply).subscribe();
-    location.reload();
+    const index = this.tweets.findIndex((x) => x.tweet_id === tweetid);
+    if (this.tweets[index].replystring == null) {
+      alert('Please Enter a Reply');
+    } else {
+      this.tweetService
+        .addReply(tweetid, this.userid, this.tweets[index].replystring)
+        .subscribe(() => {
+          this.tweets[index].replycheck = false;
+          this.getTweets();
+        });
+    }
   }
 }

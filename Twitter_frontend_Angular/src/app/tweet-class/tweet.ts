@@ -5,4 +5,8 @@ export class Tweet {
   tweet!: string;
   user!: User;
   reply: any[];
+  replystring: string;
+  replycheck: boolean = false;
+  editcheck: boolean = false;
+  editstring: string;
 }
