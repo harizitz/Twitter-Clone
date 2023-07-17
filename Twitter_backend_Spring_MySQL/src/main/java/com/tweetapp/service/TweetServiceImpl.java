@@ -6,6 +6,7 @@ import java.util.List;
 import javax.transaction.Transactional;
 
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder;
 import org.springframework.stereotype.Service;
 
 import com.tweetapp.model.Likes;
@@ -40,7 +41,7 @@ public class TweetServiceImpl implements TweetService {
 			return null;
 		}
 		user.setUserCreatedTime(new Date().toString());
-
+		user.setPassword(new BCryptPasswordEncoder().encode(user.getPassword()));
 		userRepository.save(user);
 		return user;
 	}
@@ -82,12 +83,16 @@ public class TweetServiceImpl implements TweetService {
 
 	@Override
 	public User validateLogin(User user) {
-		User userfromdb = userRepository.validateLoginFromDb(user.getEmail(), user.getPassword());
-		if (userfromdb != null) {
-			userRepository.save(userfromdb);
-			return userfromdb;
+		User userInDB = userRepository.findByEmail(user.getEmail());
+		if (userInDB == null) {
+			return null;
 		}
-		return userfromdb;
+		boolean matches = new BCryptPasswordEncoder().matches(user.getPassword(), userInDB.getPassword());
+		if (matches) {
+			return userInDB;
+		} else {
+			return null;
+		}
 	}
 
 	@Override
@@ -154,6 +159,5 @@ public class TweetServiceImpl implements TweetService {
 	public User validateUsername(String username) {
 		return userRepository.usernameExists(username);
 	}
-	
 
 }
