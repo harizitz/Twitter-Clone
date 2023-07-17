@@ -26,12 +26,11 @@ public class Tweets {
 
 	private String tweet;
 
-
 	@ManyToOne
 	@JoinColumn(name = "user_id")
 	private User user;
 
-	@JsonManagedReference(value="reply")
+	@JsonManagedReference(value = "reply")
 	@OneToMany(mappedBy = "tweet", cascade = CascadeType.ALL, fetch = FetchType.LAZY)
 	private List<Reply> reply;
 
@@ -39,17 +38,20 @@ public class Tweets {
 	@OneToMany(mappedBy = "tweet", cascade = CascadeType.ALL, fetch = FetchType.LAZY)
 	private List<Likes> likes;
 
+	private int likeCount=0;
+
 	public Tweets() {
 		super();
 	}
 
-	public Tweets(int tweet_id, String tweet, User user, List<Reply> reply, List<Likes> likes) {
+	public Tweets(int tweet_id, String tweet, User user, List<Reply> reply, List<Likes> likes, int likeCount) {
 		super();
 		this.tweet_id = tweet_id;
 		this.tweet = tweet;
 		this.user = user;
 		this.reply = reply;
 		this.likes = likes;
+		this.likeCount = likeCount;
 	}
 
 	public int getTweet_id() {
@@ -90,6 +92,14 @@ public class Tweets {
 
 	public void setLikes(List<Likes> likes) {
 		this.likes = likes;
+	}
+
+	public int getLikeCount() {
+		return likeCount;
+	}
+
+	public void setLikeCount(int likeCount) {
+		this.likeCount = likeCount;
 	}
 
 }

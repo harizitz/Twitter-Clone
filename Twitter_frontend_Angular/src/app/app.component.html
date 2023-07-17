@@ -1,27 +1,37 @@
-<br>
-<h2 class="text-center">{{title}}</h2>
-<br>
+<br />
+
+<h2 class="text-center"><img src="../assets/logo.png" alt="" /> {{ title }}</h2>
+<br />
 <nav class="navbar navbar-expand-sm bg-dark navbar-dark" *ngIf="canShowNav">
   <ul class="navbar-nav">
     <li class="nav-item">
-      <a routerLink="tweets" class="nav-link" routerLinkActive="active">Tweets</a>
+      <a routerLink="tweets" class="nav-link" routerLinkActive="active"
+        >Tweets</a
+      >
     </li>
     <li class="nav-item">
       <a routerLink="users" class="nav-link" routerLinkActive="active">Users</a>
     </li>
 
     <li class="nav-item">
-      <a [routerLink]="['/get', userid]" class="nav-link" routerLinkActive="active">My Tweets</a>
+      <a
+        [routerLink]="['/get', userid]"
+        class="nav-link"
+        routerLinkActive="active"
+        >My Tweets</a
+      >
     </li>
 
     <li class="nav-item">
-      <a routerLink="addtweet" class="nav-link" routerLinkActive="active">Add Tweet</a>
+      <a routerLink="addtweet" class="nav-link" routerLinkActive="active"
+        >Add Tweet</a
+      >
     </li>
   </ul>
   <div class="col-md-8 text-right"></div>
   <button class="btn btn-danger" (click)="logout()">Logout</button>
 </nav>
-<h6 *ngIf="canShowNav" class="text-center">Username : {{username}}</h6>
+<h6 *ngIf="canShowNav" class="text-center">Username : {{ username }}</h6>
 
 <div class="container">
   <router-outlet></router-outlet>

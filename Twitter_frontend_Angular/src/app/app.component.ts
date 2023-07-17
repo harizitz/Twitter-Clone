@@ -25,9 +25,6 @@ export class AppComponent {
 
   logout() {
     if (confirm('Are you sure to Logout ')) {
-      this.tweetservice
-        .logout(Number(localStorage.getItem('userid')))
-        .subscribe();
       localStorage.removeItem('userid');
       localStorage.removeItem('username');
       location.reload();

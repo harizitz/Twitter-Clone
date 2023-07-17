@@ -19,4 +19,5 @@ public interface LikeRepository extends JpaRepository<Likes, Integer> {
 	
 	@Query("SELECT l FROM Likes l WHERE l.user.user_id = ?1")
 	List<Likes> findUserlike(int user_id);
+	
 }

@@ -14,6 +14,8 @@ import com.tweetapp.model.User;
 public interface TweetService {
 
 	public User validateAndSave(User user);
+	
+	public User validateUsername(String username);
 
 	public void addTweet(int user_id, Tweets tweet);
 
@@ -22,8 +24,6 @@ public interface TweetService {
 	public void updateTweet(int user_id, int tweet_id, String editTweet);
 
 	public User validateLogin(User user);
-	
-	public void logout(int user_id);
 
 	public void addLike(int user_id, int tweet_id);
 

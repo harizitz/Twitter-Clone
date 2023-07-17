@@ -1,5 +1,6 @@
 package com.tweetapp.model;
 
+import java.util.Date;
 import java.util.List;
 
 import javax.persistence.CascadeType;
@@ -22,12 +23,12 @@ public class User {
 
 	private String firstName;
 	private String lastName;
+	private String username;
 	private String gender;
 	private String email;
 	private String password;
-	private String dateOfBirth;
+	private Date dateOfBirth;
 	private String userCreatedTime;
-	private Boolean isUserLoggedIn;
 
 	@JsonIgnore
 	@OneToMany(mappedBy = "user", cascade = CascadeType.ALL)
@@ -69,6 +70,14 @@ public class User {
 		this.lastName = lastName;
 	}
 
+	public String getUsername() {
+		return username;
+	}
+
+	public void setUsername(String username) {
+		this.username = username;
+	}
+
 	public String getGender() {
 		return gender;
 	}
@@ -93,11 +102,11 @@ public class User {
 		this.password = password;
 	}
 
-	public String getDateOfBirth() {
+	public Date getDateOfBirth() {
 		return dateOfBirth;
 	}
 
-	public void setDateOfBirth(String dateOfBirth) {
+	public void setDateOfBirth(Date dateOfBirth) {
 		this.dateOfBirth = dateOfBirth;
 	}
 
@@ -107,14 +116,6 @@ public class User {
 
 	public void setUserCreatedTime(String userCreatedTime) {
 		this.userCreatedTime = userCreatedTime;
-	}
-
-	public Boolean getIsUserLoggedIn() {
-		return isUserLoggedIn;
-	}
-
-	public void setIsUserLoggedIn(Boolean isUserLoggedIn) {
-		this.isUserLoggedIn = isUserLoggedIn;
 	}
 
 	public List<Tweets> getTweets() {
@@ -140,4 +141,5 @@ public class User {
 	public void setLikes(List<Likes> likes) {
 		this.likes = likes;
 	}
+
 }

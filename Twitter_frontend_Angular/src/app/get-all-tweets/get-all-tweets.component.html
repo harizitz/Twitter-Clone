@@ -1,9 +1,9 @@
+<h6 *ngIf="nullRecords">No Records Found</h6>
 <div *ngFor="let tweet of tweets">
   <div class="card-body">
     <h5 class="card-title">{{ tweet.tweet }}</h5>
-    <p class="card-text">
-      by - {{ tweet.user.firstName }} {{ tweet.user.lastName }}
-    </p>
+    <p class="card-text">by - {{ tweet.user.username }}</p>
+    <p>Likes : {{ tweet.likeCount }}</p>
     <button
       (click)="tweet.replycheck = !tweet.replycheck"
       class="btn btn-primary btn-sm"
@@ -33,7 +33,7 @@
       <div class="card" *ngFor="let reply of tweet.reply">
         <div class="card-body" *ngIf="reply">
           <h6>{{ reply.reply }}</h6>
-          <p>by-{{ reply.user.firstName }}</p>
+          <p>by-{{ reply.user.username }}</p>
         </div>
       </div>
     </div>

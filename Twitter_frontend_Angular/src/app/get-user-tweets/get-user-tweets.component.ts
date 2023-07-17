@@ -12,10 +12,8 @@ import { User } from '../user-class/user';
 export class GetUserTweetsComponent implements OnInit {
   public tweets: Array<Tweet> = [];
   id: number;
-  constructor(
-    private tweetService: TweetServiceService,
-    private activatedroute: ActivatedRoute
-  ) {}
+  nullRecords: boolean = false;
+  constructor(private tweetService: TweetServiceService) {}
 
   ngOnInit(): void {
     this.id = Number(localStorage.getItem('userid'));
@@ -24,6 +22,11 @@ export class GetUserTweetsComponent implements OnInit {
   private getTweets() {
     this.tweetService.getAllTweetsOfUser(this.id).subscribe((data) => {
       this.tweets = data;
+      if (data.length == 0) {
+        this.nullRecords = true;
+      } else {
+        this.nullRecords = false;
+      }
     });
   }
 
@@ -44,7 +47,7 @@ export class GetUserTweetsComponent implements OnInit {
   }
 
   deleteTweet(tweetid: number) {
-    if (confirm('Are you sure to Delete')) {
+    if (confirm('Are you sure to Delete the Tweet')) {
       let userid = Number(localStorage.getItem('userid'));
       this.tweetService.delete(userid, tweetid).subscribe(() => {
         this.getTweets();
@@ -53,7 +56,7 @@ export class GetUserTweetsComponent implements OnInit {
   }
 
   deleteReply(replyid: number) {
-    if (confirm('Are you sure to Delete')) {
+    if (confirm('Are you sure to Delete the Reply')) {
       let userid = Number(localStorage.getItem('userid'));
       this.tweetService.deleteReply(userid, replyid).subscribe(() => {
         this.getTweets();

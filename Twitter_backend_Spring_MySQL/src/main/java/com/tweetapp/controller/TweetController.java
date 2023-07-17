@@ -52,11 +52,6 @@ public class TweetController {
 		return tweetservice.validateLogin(user);
 	}
 
-	@GetMapping("/{userid}/logout")
-	public void logout(@PathVariable("userid") int user_id) {
-		tweetservice.logout(user_id);
-	}
-
 	@PostMapping("/{userid}/add")
 	public void postTweet(@PathVariable("userid") int user_id, @RequestBody Tweets tweet) {
 		tweetservice.addTweet(user_id, tweet);
@@ -76,7 +71,7 @@ public class TweetController {
 	public void deleteTweet(@PathVariable("id") int id) {
 		tweetservice.deleteTweet(id);
 	}
-	
+
 	@DeleteMapping("/{userid}/deleteReply/{id}")
 	public void deleteReply(@PathVariable("id") int id) {
 		tweetservice.deleteReply(id);
@@ -91,5 +86,10 @@ public class TweetController {
 	@GetMapping("/likes/{userid}")
 	public List<Likes> getuserlikes(@PathVariable("userid") int userid) {
 		return tweetservice.getUserLikes(userid);
+	}
+	
+	@PostMapping("/usernameCheck")
+	public User username(@RequestBody String username) {
+		return tweetservice.validateUsername(username);
 	}
 }

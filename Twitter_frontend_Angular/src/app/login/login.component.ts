@@ -26,10 +26,7 @@ export class LoginComponent implements OnInit {
         } else {
           this.user = data;
           localStorage.setItem('userid', this.user.user_id.toString());
-          localStorage.setItem(
-            'username',
-            this.user.firstName + ' ' + this.user.lastName
-          );
+          localStorage.setItem('username', this.user.username);
           location.reload();
         }
       });

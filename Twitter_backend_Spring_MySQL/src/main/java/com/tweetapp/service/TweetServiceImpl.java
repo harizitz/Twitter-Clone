@@ -40,7 +40,7 @@ public class TweetServiceImpl implements TweetService {
 			return null;
 		}
 		user.setUserCreatedTime(new Date().toString());
-		user.setIsUserLoggedIn(false);
+
 		userRepository.save(user);
 		return user;
 	}
@@ -62,7 +62,7 @@ public class TweetServiceImpl implements TweetService {
 
 		Tweets tweet = new Tweets();
 		tweet.setTweet_id(tweet_id);
-		Reply postReply=new Reply();
+		Reply postReply = new Reply();
 		postReply.setTweet(tweet);
 		postReply.setUser(user);
 		postReply.setReply(reply);
@@ -84,7 +84,6 @@ public class TweetServiceImpl implements TweetService {
 	public User validateLogin(User user) {
 		User userfromdb = userRepository.validateLoginFromDb(user.getEmail(), user.getPassword());
 		if (userfromdb != null) {
-			userfromdb.setIsUserLoggedIn(true);
 			userRepository.save(userfromdb);
 			return userfromdb;
 		}
@@ -92,13 +91,9 @@ public class TweetServiceImpl implements TweetService {
 	}
 
 	@Override
-	public void logout(int user_id) {
-		userRepository.updateStatus(user_id);
-	}
-
-	@Override
 	public void addLike(int user_id, int tweet_id) {
 		Likes existing = likeRepository.existing(user_id, tweet_id);
+		Tweets forLike = tweetRepository.getById(tweet_id);
 		if (existing == null) {
 			User user = new User();
 			user.setUser_id(user_id);
@@ -110,9 +105,13 @@ public class TweetServiceImpl implements TweetService {
 			like.setTweet(tweet);
 			like.setUser(user);
 			likeRepository.save(like);
+
+			forLike.setLikeCount(forLike.getLikeCount() + 1);
 		} else {
 			likeRepository.deleteif(tweet_id);
+			forLike.setLikeCount(forLike.getLikeCount() - 1);
 		}
+		tweetRepository.save(forLike);
 	}
 
 	@Override
@@ -139,7 +138,7 @@ public class TweetServiceImpl implements TweetService {
 	public void deleteTweet(int id) {
 		tweetRepository.deleteById(id);
 	}
-	
+
 	@Override
 	public void deleteReply(int id) {
 		replyRepository.deleteById(id);
@@ -150,5 +149,11 @@ public class TweetServiceImpl implements TweetService {
 		List<Likes> findUserlike = likeRepository.findUserlike(userid);
 		return findUserlike;
 	}
+
+	@Override
+	public User validateUsername(String username) {
+		return userRepository.usernameExists(username);
+	}
+	
 
 }

@@ -12,6 +12,7 @@ export class GetAllTweetsComponent implements OnInit {
   public tweets: Array<Tweet> = [];
   userid: number;
   likes: Like[];
+  nullRecords: boolean = false;
   tweetlike: Number[] = [];
   constructor(private tweetService: TweetServiceService) {}
 
@@ -23,17 +24,25 @@ export class GetAllTweetsComponent implements OnInit {
   private getTweets() {
     this.tweetService.getAllTweets().subscribe((data) => {
       this.tweets = data;
+      if (data.length == 0) {
+        this.nullRecords = true;
+      } else {
+        this.nullRecords = false;
+      }
     });
   }
 
   likeit(tweetid: number) {
     this.userid = Number(localStorage.getItem('userid'));
-    if (this.tweetlike.indexOf(tweetid) >= 0) {
-      delete this.tweetlike[this.tweetlike.indexOf(tweetid)];
-    } else {
-      this.tweetlike.push(tweetid);
-    }
-    this.tweetService.like(this.userid, tweetid).subscribe();
+
+    this.tweetService.like(this.userid, tweetid).subscribe(() => {
+      if (this.tweetlike.indexOf(tweetid) >= 0) {
+        delete this.tweetlike[this.tweetlike.indexOf(tweetid)];
+      } else {
+        this.tweetlike.push(tweetid);
+      }
+      this.getTweets();
+    });
   }
 
   getUserLikes() {

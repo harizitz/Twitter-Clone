@@ -23,7 +23,7 @@ export class AddTweetComponent implements OnInit {
     if (
       this.tweet.tweet == undefined ||
       this.tweet.tweet == null ||
-      !/^[a-zA-Z 0-9]+$/.test(this.tweet.tweet)
+      !/^[a-zA-Z 0-9+_!@#$%^&*.,?]+$/.test(this.tweet.tweet)
     ) {
       this.tweetcheck = true;
     } else {

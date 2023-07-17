@@ -8,5 +8,6 @@ export class Tweet {
   replystring: string;
   replycheck: boolean = false;
   editcheck: boolean = false;
-  editstring: string;
+  editstring: string = this.tweet;
+  likeCount: number;
 }

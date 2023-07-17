@@ -12,11 +12,14 @@ export class RegisterComponent implements OnInit {
   user: User = new User();
   firstNameCheck: boolean = false;
   lastNameCheck: boolean = false;
+  usernameCheck: boolean = false;
   gendercheck: boolean = false;
   emailcheck: boolean = false;
   passwordcheck: boolean = false;
   dobcheck: boolean = false;
-  date = new Date();
+  available: boolean = false;
+  usern: string;
+  date = new Date().toISOString().slice(0, 10);
   constructor(
     private tweetService: TweetServiceService,
     private router: Router
@@ -78,8 +81,31 @@ export class RegisterComponent implements OnInit {
       this.passwordcheck = false;
     }
   }
+  usernamechecker() {
+    if (
+      this.user.username == undefined ||
+      !/^[a-zA-Z-+_!@#$%^&*.,?]+$/.test(this.user.username)
+    ) {
+      this.usernameCheck = true;
+      this.available = false;
+    } else {
+      this.tweetService.checkusername(this.user.username).subscribe((data) => {
+        if (data != null) {
+          this.usernameCheck = true;
+          this.available = false;
+        } else {
+          this.usernameCheck = false;
+          this.available = true;
+        }
+      });
+    }
+  }
+
   dobchecker() {
-    if (this.user.dateOfBirth == undefined) {
+    if (
+      this.user.dateOfBirth == undefined ||
+      this.user.dateOfBirth >= this.date
+    ) {
       this.dobcheck = true;
     } else {
       this.dobcheck = false;
@@ -94,13 +120,15 @@ export class RegisterComponent implements OnInit {
     this.emailchecker();
     this.passwordchecker();
     this.dobchecker();
+    this.usernamechecker();
     if (
       this.firstNameCheck == false &&
       this.lastNameCheck == false &&
       this.gendercheck == false &&
       this.emailcheck == false &&
       this.passwordcheck == false &&
-      this.dobcheck == false
+      this.dobcheck == false &&
+      this.usernameCheck == false
     ) {
       this.tweetService.addUser(this.user).subscribe((data) => {
         if (data == null) {

@@ -26,9 +26,7 @@ export class TweetServiceService {
   login(user: User): Observable<User> {
     return this.httpClient.post<User>(`${this.baseURL}` + 'login', user);
   }
-  logout(userid: number): Observable<any> {
-    return this.httpClient.get(`${this.baseURL}` + userid + '/' + 'logout');
-  }
+
   addtweet(tweet: Tweet, userid: number): Observable<Tweet> {
     return this.httpClient.post<Tweet>(
       `${this.baseURL}` + userid + '/' + 'add',
@@ -61,6 +59,13 @@ export class TweetServiceService {
   deleteReply(userid: number, replyid: number): Observable<any> {
     return this.httpClient.delete(
       `${this.baseURL}` + userid + '/' + 'deleteReply/' + replyid
+    );
+  }
+
+  checkusername(username: String): Observable<User> {
+    return this.httpClient.post<User>(
+      `${this.baseURL}` + 'usernameCheck',
+      username
     );
   }
 }
