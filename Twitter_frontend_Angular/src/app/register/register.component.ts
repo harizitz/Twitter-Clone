@@ -134,7 +134,7 @@ export class RegisterComponent implements OnInit {
         if (data == null) {
           alert('User already exists, Please Login');
         } else {
-          alert('Registered Successfully');
+          alert('Registered Successfully. Please Login');
           this.router.navigate(['/login']);
         }
       });
